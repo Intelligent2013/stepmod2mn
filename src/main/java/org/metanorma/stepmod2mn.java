@@ -281,7 +281,11 @@ public class stepmod2mn {
                     //argXMLin = localPath.toString();
                     System.out.println("Done!");*/
                 } else { // in case of local file
-                    File fXMLin = new File(argXMLin);
+                    String argXMLin_normalized = argXMLin;
+                    if (argXMLin_normalized.startsWith("./") || argXMLin_normalized.startsWith(".\\")) {
+                        argXMLin_normalized = argXMLin_normalized.substring(2);
+                    }
+                    File fXMLin = new File(argXMLin_normalized);
                     fXMLin = fXMLin.getAbsoluteFile();
                     System.out.println("fXMLin=" + fXMLin.toString());
                     if (!fXMLin.exists()) {
