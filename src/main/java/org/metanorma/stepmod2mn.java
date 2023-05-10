@@ -283,6 +283,7 @@ public class stepmod2mn {
                 } else { // in case of local file
                     File fXMLin = new File(argXMLin);
                     fXMLin = fXMLin.getAbsoluteFile();
+                    System.out.println("fXMLin=" + fXMLin.toString());
                     if (!fXMLin.exists()) {
                         System.out.println(String.format(INPUT_NOT_FOUND, XML_INPUT, fXMLin));
                         System.exit(ERROR_EXIT_CODE);
@@ -291,6 +292,7 @@ public class stepmod2mn {
                     //parent path for input resource.xml
                     //resourcePath = new File(argXMLin).getParent() + File.separator;
                     resourcePath = fXMLin.getParent() + File.separator;
+                    System.out.println("resourcePath=" + resourcePath);
 
                     if (!cmd.hasOption("output")) { // if local file, then save result in input folder
                       outFileName = fXMLin.getAbsolutePath();

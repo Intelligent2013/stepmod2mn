@@ -2161,7 +2161,9 @@ the types, entity specializations, and functions that are specific to this part 
 		<xsl:variable name="doctype">
 			<xsl:apply-templates select="$current_resource" mode="doctype"/>
 		</xsl:variable>
-
+		
+		<xsl:message>path=<xsl:value-of select="concat($path, '../../../data/basic/normrefs_resdoc_default.xml'))"/></xsl:message>
+		
 		<!-- get all default normrefs listed in ../../data/basic/normrefs_resdoc_default.xml -->
 		<xsl:variable name="normref_list1">
 			<xsl:choose>
@@ -3611,6 +3613,7 @@ test="document('../../data/basic/normrefs.xml')/normref.list/normref[@id=$normre
 							</xsl:call-template>
 							<!-- <ul> -->							
 							
+					<xsl:message>path=<xsl:value-of select="concat($path, '../../../data/basic/normrefs_resdoc_default.xml'))"/></xsl:message>
 					<!-- now output the terms -->
 						<xsl:variable name="moreNormRefs" select="string-length(/resource/normrefs/normref.inc[@normref=$ref]/term.ref)+string-length(/resource/normrefs/normref.inc)+1"/>
 								<xsl:choose>
@@ -3755,6 +3758,8 @@ test="document('../../data/basic/normrefs.xml')/normref.list/normref[@id=$normre
 				<xsl:with-param name="normref_list" select="''" />
 			</xsl:call-template>
 		</xsl:variable>
+
+		<xsl:message>path=<xsl:value-of select="concat($path, '../../../data/basic/normrefs_resdoc_default.xml'))"/></xsl:message>
 
 		<!-- get all default normrefs listed in ../data/basic/normrefs.xml -->
 		<xsl:variable name="normref_list2">
