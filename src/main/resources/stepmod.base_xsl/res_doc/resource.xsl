@@ -3184,10 +3184,10 @@ test="document('../../data/basic/normrefs.xml')/normref.list/normref[@id=$normre
 		<xsl:variable name="ref" select="@ref"/>
 		
 		<xsl:variable name="normref_xml" select="document(concat($path, '../../../data/basic/normrefs.xml'))"/>
-		<xsl:variable name="normref_node" select="$normref_xml/normref.list/normref[@id=$id]"/>
+		<xsl:variable name="normref_node" select="$normref_xml/normref.list/normref[@id=$ref]"/>
 
 		<xsl:if test="$normref_node">
-			<xsl:apply-templates select="$normref_xml/normref.list/normref[@id=$id]">
+			<xsl:apply-templates select="$normref_xml/normref.list/normref[@id=$ref]">
 				<xsl:with-param name="current_resource" select="$current_resource"/>
 			</xsl:apply-templates>
 		</xsl:if>
