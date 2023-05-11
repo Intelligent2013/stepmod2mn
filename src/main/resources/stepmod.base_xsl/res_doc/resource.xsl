@@ -3392,7 +3392,8 @@ test="document('../../data/basic/normrefs.xml')/normref.list/normref[@id=$normre
 		<!-- <table width="80%" type="abbreviations"> -->
 			<!-- get the default abbreviations out of the abbreviations_resdoc_defaultxml
 		 database -->
-			<xsl:apply-templates select="document(concat($path, '../../../data/basic/abbreviations_resdoc_default.xml'))/abbreviations/abbreviation.inc"/>
+			<xsl:variable name="abbreviations_resdoc_default_xml" select="document(concat($path, '../../../data/basic/abbreviations_resdoc_default.xml'))"/>
+			<xsl:apply-templates select="$abbreviations_resdoc_default_xml/abbreviations/abbreviation.inc"/>
 			
 			<xsl:apply-templates select="/resource/abbreviations" mode="output"/>    
 			<xsl:text>&#xa;</xsl:text>
@@ -3638,16 +3639,55 @@ test="document('../../data/basic/normrefs.xml')/normref.list/normref[@id=$normre
 						<xsl:variable name="moreNormRefs" select="string-length(/resource/normrefs/normref.inc[@normref=$ref]/term.ref)+string-length(/resource/normrefs/normref.inc)+1"/>
 								<xsl:choose>
 									<xsl:when test="not($doctype='aic')">
-										<xsl:apply-templates select="document(concat($path, '../../../data/basic/normrefs_resdoc_default.xml'))/normrefs/normref.inc[@normref=$ref]/term.ref" mode="normref">
-											<xsl:with-param name="current_resource" select="$current_resource"/>
-											<xsl:with-param name="moreNormRefs" select="$moreNormRefs"/>
-										</xsl:apply-templates>
+									
+										<xsl:variable name="normrefs_resdoc_default_xml" select="document(concat($path, '../../../data/basic/normrefs_resdoc_default.xml'))"/>
+										
+										<xsl:variable name="normrefs_resdoc_default_node" select="$normrefs_resdoc_default_xml/normrefs/normref.inc[@normref=$ref]"/>
+										
+										<xsl:choose>
+											<xsl:when test="$normrefs_resdoc_default_node">
+												<xsl:apply-templates select="$normrefs_resdoc_default_xml/normrefs/normref.inc[@normref=$ref]/term.ref" mode="normref">
+													<xsl:with-param name="current_resource" select="$current_resource"/>
+													<xsl:with-param name="moreNormRefs" select="$moreNormRefs"/>
+												</xsl:apply-templates>
+											</xsl:when>
+											
+											<xsl:otherwise>
+												<xsl:call-template name="error_message">
+													<xsl:with-param name="message">
+														<xsl:value-of select="concat('Error 7: reference with id ', $ref, ' not found')"/>
+													</xsl:with-param>
+												</xsl:call-template>
+											</xsl:otherwise>
+											
+										</xsl:choose>
+										
 									</xsl:when>
 									<xsl:when test="$doctype='aic'">
-										<xsl:apply-templates select="document(concat($path, '../../../data/basic/normrefs_aic_default.xml'))/normrefs/normref.inc[@normref=$ref]/term.ref" mode="normref">
-											<xsl:with-param name="current_resource" select="$current_resource"/>
-											<xsl:with-param name="moreNormRefs" select="$moreNormRefs"/>
-										</xsl:apply-templates>
+									
+									
+										<xsl:variable name="normrefs_aic_default_xml" select="document(concat($path, '../../../data/basic/normrefs_aic_default.xml'))"/>
+										
+										<xsl:variable name="normrefs_aic_default_node" select="$normrefs_aic_default_xml/normrefs/normref.inc[@normref=$ref]"/>
+										
+										<xsl:choose>
+											<xsl:when test="$normrefs_aic_default_node">
+												<xsl:apply-templates select="$normrefs_aic_default_xml/normrefs/normref.inc[@normref=$ref]/term.ref" mode="normref">
+													<xsl:with-param name="current_resource" select="$current_resource"/>
+													<xsl:with-param name="moreNormRefs" select="$moreNormRefs"/>
+												</xsl:apply-templates>
+											</xsl:when>
+											
+											<xsl:otherwise>
+												<xsl:call-template name="error_message">
+													<xsl:with-param name="message">
+														<xsl:value-of select="concat('Error 7: reference with id ', $ref, ' not found')"/>
+													</xsl:with-param>
+												</xsl:call-template>
+											</xsl:otherwise>
+											
+										</xsl:choose>
+										
 									</xsl:when>
 								</xsl:choose>
 								<!-- check to see if any terms from the same normref are 
