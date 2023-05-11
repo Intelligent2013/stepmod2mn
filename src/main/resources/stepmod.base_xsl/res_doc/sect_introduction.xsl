@@ -192,12 +192,16 @@ $Id: sect_introduction.xsl,v 1.13 2010/10/20 07:44:26 robbod Exp $
 		<xsl:variable name="local-schemas" select="../schema" />
 		<ref-list>
 			<xsl:for-each select="express-g/imgfile">
-				<xsl:for-each select="document(concat($path, @file))//img.area[@href]" >
-					<xsl:variable name="this-schema" select="substring-after(@href,'#')" />
-					<xsl:if test="not($local-schemas[@name=$this-schema])" >    
-						<used-schema><xsl:value-of select="$this-schema" /></used-schema>
-					</xsl:if>
-				</xsl:for-each>
+				<xsl:variable name="imgfile_xml" select="document(concat($path, @file))"/>
+				<xsl:variable name="imgfile_node" select="$imgfile_xml//img.area[@href]"/>
+				<xsl:if test="$imgfile_node">
+					<xsl:for-each select="$imgfile_xml//img.area[@href]" >
+						<xsl:variable name="this-schema" select="substring-after(@href,'#')" />
+						<xsl:if test="not($local-schemas[@name=$this-schema])" >    
+							<used-schema><xsl:value-of select="$this-schema" /></used-schema>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:if>
 			</xsl:for-each>
 		</ref-list>
 	</xsl:template>
