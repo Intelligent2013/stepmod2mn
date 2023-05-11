@@ -207,7 +207,7 @@ $Id: sect_c_exp_schema.xsl,v 1.7 2014/05/29 20:31:13 nigelshaw Exp $
 	</xsl:variable>
 	<xsl:variable 
 		name="express_xml"
-		select="concat($resource_dir,'/',$schema_name,'.xml')"/>
+		select="document(concat($resource_dir,'/',$schema_name,'.xml'))"/>
 	<!-- get the express and display using the express_code.xsl stylesheet that
 			 has been imported.
 			 -->
@@ -217,7 +217,7 @@ $Id: sect_c_exp_schema.xsl,v 1.7 2014/05/29 20:31:13 nigelshaw Exp $
 	</xsl:message> -->
 
 	
-	<xsl:apply-templates select="document($express_xml)/express/schema" mode="code"/>
+	<xsl:apply-templates select="$express_xml/express/schema" mode="code"/>
 	
 
 		<!-- <xsl:message>

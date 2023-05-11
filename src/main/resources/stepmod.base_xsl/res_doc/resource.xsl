@@ -2501,9 +2501,7 @@ the types, entity specializations, and functions that are specific to this part 
 			select="substring-after($first,'normref:')"/>
 			
 				<xsl:variable name="normref_xml" select="document(concat($path, '../../../data/basic/normrefs.xml'))"/>
-			
 				<xsl:variable name="normref_node" select="$normref_xml/normref.list/normref[@id=$id]"/>
-				
 				<xsl:choose>
 					<xsl:when test="$normref_node">
 					
@@ -2544,16 +2542,16 @@ the types, entity specializations, and functions that are specific to this part 
 				</xsl:variable>
 				
 				<xsl:variable name="resource_xml" 
-					select="concat($resource_dir,'/resource.xml')"/>
+					select="document(concat($resource_dir,'/resource.xml'))"/>
 
 				
 				<!-- output the normative reference derived from the resource -->
 				<xsl:variable name="normref">
-		<xsl:if test="$resource_ok='true'">
-			<xsl:apply-templates 
-					select="document($resource_xml)/resource"
-					mode="prune_normrefs_list"/>
-		</xsl:if>
+					<xsl:if test="$resource_ok='true'">
+						<xsl:apply-templates 
+								select="$resource_xml/resource"
+								mode="prune_normrefs_list"/>
+					</xsl:if>
 				</xsl:variable>
 				
 				<!-- if the normref for the resource has been already been added,
@@ -2913,12 +2911,12 @@ the types, entity specializations, and functions that are specific to this part 
 			</xsl:variable>
 			
 			<xsl:variable name="resource_xml" 
-				select="concat($resource_dir,'/resource.xml')"/>
+				select="document(concat($resource_dir,'/resource.xml'))"/>
 			
 			<!-- output the normative reference derived from the resource -->
 				<xsl:element name="normref">
 				<xsl:apply-templates 
-				select="document($resource_xml)/resource" mode="normref">
+				select="$resource_xml/resource" mode="normref">
 				</xsl:apply-templates>
 		</xsl:element>
 			
@@ -3184,11 +3182,15 @@ test="document('../../data/basic/normrefs.xml')/normref.list/normref[@id=$normre
 		<xsl:param name="current_resource"/>
 
 		<xsl:variable name="ref" select="@ref"/>
-		<xsl:apply-templates 
-	select="document(concat($path, '../../../data/basic/normrefs.xml'))/normref.list/normref[@id=$ref]">
+		
+		<xsl:variable name="normref_xml" select="document(concat($path, '../../../data/basic/normrefs.xml'))"/>
+		<xsl:variable name="normref_node" select="$normref_xml/normref.list/normref[@id=$id]"/>
 
-			<xsl:with-param name="current_resource" select="$current_resource"/>
-		</xsl:apply-templates>
+		<xsl:if test="$normref_node">
+			<xsl:apply-templates select="$normref_xml/normref.list/normref[@id=$id]">
+				<xsl:with-param name="current_resource" select="$current_resource"/>
+			</xsl:apply-templates>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="output_resource_normref">
@@ -4449,9 +4451,11 @@ test="document('../../data/basic/normrefs.xml')/normref.list/normref[@id=$normre
 		</xsl:choose>
 		</xsl:variable>
 		
+		<xsl:variable name="map_file_xml" select="document($map_file)"/>
+		<xsl:variable name="map_file_node" select="$map_file_xml//img.area[@href]"/>
 		<xsl:choose>
-			<xsl:when test="document($map_file)//img.area[@href]">
-				<xsl:apply-templates select="document($map_file)//img.area[@href]" mode="svg"/>
+			<xsl:when test="$map_file_node">
+				<xsl:apply-templates select="$map_file_xml//img.area[@href]" mode="svg"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="concat('ERROR: Image map file ', @file, '(', $map_file, ') does not exist or empty!')"/>
