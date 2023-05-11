@@ -48,6 +48,7 @@ $Id: sect_a_short_names.xsl,v 1.10 2018/01/18 20:20:21 mike Exp $
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:variable name="express_xml" select="concat($resource_dir,'/',@name,'.xml')"/>  
+			<xsl:message>Test here</xsl:message>
 			<xsl:for-each select="document($express_xml)/express/schema/entity">
 				<xsl:variable name="entity" select="@name"/>
 				<!--<xsl:if test="not($shortnames[@entity=$entity])">
