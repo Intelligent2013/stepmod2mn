@@ -2501,13 +2501,31 @@ the types, entity specializations, and functions that are specific to this part 
 				<xsl:variable 
 			name="id" 
 			select="substring-after($first,'normref:')"/>
-
-				<xsl:variable name="normref">
-		<xsl:apply-templates 
-				select="document(concat($path, '../../../data/basic/normrefs.xml'))/normref.list/normref[@id=$id]" mode="prune_normrefs_list"/>
-				</xsl:variable>
-				<!-- return the normref to be added to the list -->
-				<xsl:value-of select="$normref"/>
+			
+				<xsl:variable name="normref_xml" select="document(concat($path, '../../../data/basic/normrefs.xml'))"/>
+			
+				<xsl:variable name="normref_node" select="$normref_xml/normref.list/normref[@id=$id]"/>
+				
+				<xsl:choose>
+					<xsl:when test="$normref_node">
+					
+						<xsl:variable name="normref">
+							<xsl:apply-templates select="$normref_xml/normref.list/normref[@id=$id]" mode="prune_normrefs_list"/>
+						</xsl:variable>
+						<!-- return the normref to be added to the list -->
+						<xsl:value-of select="$normref"/>
+						
+					</xsl:when>
+					
+					<xsl:otherwise>
+						<xsl:call-template name="error_message">
+							<xsl:with-param name="message">
+								<xsl:value-of select="concat('Error 7: reference with id ', $id, ' not found')"/>
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:otherwise>
+					
+				</xsl:choose>
 			</xsl:when>
 
 			<xsl:when test="contains($first,'resource:')">
