@@ -2798,9 +2798,11 @@ the types, entity specializations, and functions that are specific to this part 
 		name="normref" 
 		select="substring-after($first,'normref:')"/>
 
+			<xsl:variable name="normref_xml" select="document(concat($path, '../../../data/basic/normrefs.xml'))"/>
+
 			<xsl:variable 
 		name="normref_node"
-		select="document(concat($path, '../../../data/basic/normrefs.xml'))/normref.list/normref[@id=$normref]"/>
+		select="$normref_xml/normref.list/normref[@id=$normref]"/>
 			
 			<xsl:choose>
 				<xsl:when test="$normref_node">   
@@ -2814,14 +2816,14 @@ the types, entity specializations, and functions that are specific to this part 
 							 <xsl:element name="string">
 								<xsl:if test="$resource_number!=$part_no">
 									<!-- OOUTPUT from normative references -->
-										<xsl:apply-templates select="document(concat($path, '../../../data/basic/normrefs.xml'))/normref.list/normref[@id=$normref]"/>
+										<xsl:apply-templates select="$normref_xml/normref.list/normref[@id=$normref]"/>
 								</xsl:if>
 							</xsl:element>
 							<xsl:variable name="part">
-								<xsl:value-of select="document(concat($path, '../../../data/basic/normrefs.xml'))/normref.list/normref[@id=$normref]/stdref/stdnumber"/>
+								<xsl:value-of select="$normref_xml/normref.list/normref[@id=$normref]/stdref/stdnumber"/>
 							</xsl:variable>
 							<xsl:variable name="orgname">
-								<xsl:value-of select="document(concat($path, '../../../data/basic/normrefs.xml'))/normref.list/normref[@id=$normref]/stdref/orgname"/>
+								<xsl:value-of select="$normref_xml/normref.list/normref[@id=$normref]/stdref/orgname"/>
 							</xsl:variable>
 							<!-- eliminate status info like TS, CD-TS, etc -->
 							<xsl:variable name="orgname_cleaned">
