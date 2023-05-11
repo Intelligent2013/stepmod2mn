@@ -2161,7 +2161,7 @@ the types, entity specializations, and functions that are specific to this part 
 		<xsl:variable name="doctype">
 			<xsl:apply-templates select="$current_resource" mode="doctype"/>
 		</xsl:variable>
-		
+
 		<!-- get all default normrefs listed in ../../data/basic/normrefs_resdoc_default.xml -->
 		<xsl:variable name="normref_list1">
 			<xsl:choose>
@@ -4509,9 +4509,13 @@ test="document('../../data/basic/normrefs.xml')/normref.list/normref[@id=$normre
 		</xsl:choose>
 		</xsl:variable>
 		
+		<xsl:variable name="map_file_xml" select="document($map_file)"/>
+		
+		<xsl:variable name="map_file_node" select="$map_file_xml//img.area[@href]"/>
+		
 		<xsl:choose>
-			<xsl:when test="document($map_file)//img.area[@href]">
-				<xsl:apply-templates select="document($map_file)//img.area[@href]" mode="svg"/>
+			<xsl:when test="$map_file_node">
+				<xsl:apply-templates select="$map_file_xml//img.area[@href]" mode="svg"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="concat('ERROR: Image map file ', @file, '(', $map_file, ') does not exist or empty!')"/>
