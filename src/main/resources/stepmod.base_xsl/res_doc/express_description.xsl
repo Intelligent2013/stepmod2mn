@@ -176,9 +176,7 @@ $Id: express_description.xsl,v 1.8 2015/08/03 09:40:44 mikeward Exp $
 					select="substring(normalize-space($description),1,1)"/>
 				<xsl:variable name="UPPER" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 				
-				<xsl:if test="contains($UPPER,$attr_start_char)">
-				
-					<xsl:message>description=<xsl:value-of select="$description"/></xsl:message>
+				<xsl:if test="$attr_start_char != '' and contains($UPPER,$attr_start_char)">
 				
 					<xsl:call-template name="error_message">
 						<xsl:with-param 
